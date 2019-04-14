@@ -2,6 +2,8 @@
 			    SORCERER
 	(c) Copyright 1984 Infocom, Inc.  All Rights Reserved."
 
+<BUZZ AGAIN G OOPS>
+
 <BUZZ A AN THE IS ARE AM AND OF THEN ALL ONE BUT EXCEPT \. \, \" YES NO Y
       PRY PLEASE HERE SOME>
 
@@ -69,8 +71,8 @@
 
 ;"subtitle real verbs"
 
-<SYNTAX AGAIN = V-AGAIN>
-<SYNONYM AGAIN G>
+;<SYNTAX AGAIN = V-AGAIN>
+;<SYNONYM AGAIN G>
 
 <SYNTAX ANSWER = V-ANSWER>
 <SYNTAX ANSWER OBJECT = V-REPLY>

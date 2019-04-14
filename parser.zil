@@ -116,7 +116,7 @@ with 'P-'. Local variables are not restricted in any way."
 	<SETG PERFORMING-SPELL <>>
 	<COND (,P-CONT
 	       <SET PTR ,P-CONT>
-	       <COND (<AND <NOT ,SUPER-BRIEF> <==? ,PLAYER ,WINNER>>
+	       <COND (<AND <NOT ,SUPER-BRIEF> <EQUAL? ,PLAYER ,WINNER>>
 		      <CRLF>)>
 	       <SETG P-CONT <>>)
 	      (T
@@ -129,7 +129,7 @@ with 'P-'. Local variables are not restricted in any way."
 	       <TELL ">">
 	       <READ ,P-INBUF ,P-LEXV>)>
 	<SETG P-LEN <GETB ,P-LEXV ,P-LEXWORDS>>
-	<COND (<0? ,P-LEN> <TELL "I beg your pardon?" CR> <RFALSE>)>
+	<COND (<ZERO? ,P-LEN> <TELL "I beg your pardon?" CR> <RFALSE>)>
 	<SET LEN ,P-LEN>
 	<SETG P-DIR <>>
 	<SETG P-NCN 0>
@@ -140,10 +140,10 @@ with 'P-'. Local variables are not restricted in any way."
 		       <RETURN>)
 		      (<OR <SET WRD <GET ,P-LEXV .PTR>>
 			   <SET WRD <NUMBER? .PTR>>>
-		       <COND (<AND <==? .WRD ,W?TO>
+		       <COND (<AND <EQUAL? .WRD ,W?TO>
 				   <EQUAL? .VERB ,ACT?TELL ;,ACT?ASK>>
 			      <SET WRD ,W?QUOTE>)
-			     (<AND <==? .WRD ,W?THEN>
+			     (<AND <EQUAL? .WRD ,W?THEN>
 				   <NOT .VERB>
 				   <NOT ,QUOTE-FLAG> ;"Last NOT added 7/3">
 			      <PUT ,P-ITBL ,P-VERB ,ACT?TELL>
@@ -159,7 +159,7 @@ with 'P-'. Local variables are not restricted in any way."
 					    <SETG QUOTE-FLAG <>>)
 					   (T
 					    <SETG QUOTE-FLAG T>)>)>
-			      <OR <0? ,P-LEN>
+			      <OR <ZERO? ,P-LEN>
 				  <SETG P-CONT <+ .PTR ,P-LEXELEN>>>
 			      <PUTB ,P-LEXV ,P-LEXWORDS ,P-LEN>
 			      <RETURN>)
@@ -168,8 +168,8 @@ with 'P-'. Local variables are not restricted in any way."
 					     ,PS?DIRECTION
 					     ,P1?DIRECTION>>
 				   <EQUAL? .VERB <> ,ACT?WALK ;,ACT?FLY>
-				   <OR <==? .LEN 1>
-				       <AND <==? .LEN 2>
+				   <OR <EQUAL? .LEN 1>
+				       <AND <EQUAL? .LEN 2>
 					    <EQUAL? .VERB ,ACT?WALK ;,ACT?FLY>>
 				       <AND <EQUAL? <SET NW
 						     <GET ,P-LEXV
@@ -179,7 +179,7 @@ with 'P-'. Local variables are not restricted in any way."
 					            ,W?QUOTE>
 					    <NOT <L? .LEN 2>>>
 				       <AND ,QUOTE-FLAG
-					    <==? .LEN 2>
+					    <EQUAL? .LEN 2>
 					    <EQUAL? .NW ,W?QUOTE>>
 				       <AND <G? .LEN 2>
 					    <EQUAL? .NW ,W?COMMA ,W?AND>>>>
@@ -209,23 +209,23 @@ with 'P-'. Local variables are not restricted in any way."
 					   <WT? .WRD ,PS?OBJECT>>
 				       <SET VAL 0>>>
 			      <COND (<AND <G? ,P-LEN 0>
-					  <==? <GET ,P-LEXV
+					  <EQUAL? <GET ,P-LEXV
 						    <+ .PTR ,P-LEXELEN>>
 					       ,W?OF>
 					  ;<NOT <EQUAL? .VERB ,ACT?ACCUSE>>
-					  <0? .VAL>
+					  <ZERO? .VAL>
 					  <NOT
 					   <EQUAL? .WRD ,W?ALL ,W?ONE ,W?A>>
 					  <NOT
 					   <EQUAL? .WRD ,W?BOTH>>>)
-				    (<AND <NOT <0? .VAL>>
-				          <OR <0? ,P-LEN>
+				    (<AND <NOT <ZERO? .VAL>>
+				          <OR <ZERO? ,P-LEN>
 					      <EQUAL? <GET ,P-LEXV <+ .PTR 2>>
 						      ,W?THEN ,W?PERIOD>>>
 				     <COND (<L? ,P-NCN 2>
 					    <PUT ,P-ITBL ,P-PREP1 .VAL>
 					    <PUT ,P-ITBL ,P-PREP1N .WRD>)>)
-				    (<==? ,P-NCN 2>
+				    (<EQUAL? ,P-NCN 2>
 				     <TELL
 "I found too many nouns in that sentence." CR>
 				     <RFALSE>)
@@ -265,7 +265,7 @@ with 'P-'. Local variables are not restricted in any way."
 	       <RETURN T>)>
 	<SETG P-WALK-DIR <>>
 	<COND (,P-OFLAG <ORPHAN-MERGE>)>
-	;<COND (<==? <GET ,P-ITBL ,P-VERB> 0> <PUT ,P-ITBL ,P-VERB ,ACT?CALL>)>
+	;<COND (<EQUAL? <GET ,P-ITBL ,P-VERB> 0> <PUT ,P-ITBL ,P-VERB ,ACT?CALL>)>
 	<COND (<AND <SYNTAX-CHECK> <SNARF-OBJECTS> <MANY-CHECK> <TAKE-CHECK>>
 	       T)>>
 
@@ -284,18 +284,18 @@ with 'P-'. Local variables are not restricted in any way."
 		      <RTRUE>)
 		     (T
 		      <SET TYP <BAND .TYP ,P-P1BITS>>
-		      <COND (<NOT <==? .TYP .B1>> <SET OFFS <+ .OFFS 1>>)>
+		      <COND (<NOT <EQUAL? .TYP .B1>> <SET OFFS <+ .OFFS 1>>)>
 		      <GETB .PTR .OFFS>)>)>>
 ;" Scan through a noun clause, leave a pointer to its starting location"
  
 <ROUTINE CLAUSE (PTR VAL WRD "AUX" OFF NUM (ANDFLG <>) (FIRST?? T) NW (LW 0))
 	<SET OFF <* <- ,P-NCN 1> 2>>
-	<COND (<NOT <==? .VAL 0>>
+	<COND (<NOT <EQUAL? .VAL 0>>
 	       <PUT ,P-ITBL <SET NUM <+ ,P-PREP1 .OFF>> .VAL>
 	       <PUT ,P-ITBL <+ .NUM 1> .WRD>
 	       <SET PTR <+ .PTR ,P-LEXELEN>>)
 	      (T <SETG P-LEN <+ ,P-LEN 1>>)>
-	<COND (<0? ,P-LEN> <SETG P-NCN <- ,P-NCN 1>> <RETURN -1>)>
+	<COND (<ZERO? ,P-LEN> <SETG P-NCN <- ,P-NCN 1>> <RETURN -1>)>
 	<PUT ,P-ITBL <SET NUM <+ ,P-NC1 .OFF>> <REST ,P-LEXV <* .PTR 2>>>
 	<COND (<EQUAL? <GET ,P-LEXV .PTR> ,W?THE ,W?A ,W?AN>
 	       <PUT ,P-ITBL .NUM <REST <GET ,P-ITBL .NUM> 4>>)>
@@ -305,10 +305,10 @@ with 'P-'. Local variables are not restricted in any way."
 		       <RETURN -1>)>
 		<COND (<OR <SET WRD <GET ,P-LEXV .PTR>>
 			   <SET WRD <NUMBER? .PTR>>>
-		       <COND (<0? ,P-LEN> <SET NW 0>)
+		       <COND (<ZERO? ,P-LEN> <SET NW 0>)
 			     (T <SET NW <GET ,P-LEXV <+ .PTR ,P-LEXELEN>>>)>
-		       ;<COND (<AND <==? .WRD ,W?OF>
-				   <==? <GET ,P-ITBL ,P-VERB> ,ACT?ACCUSE>>
+		       ;<COND (<AND <EQUAL? .WRD ,W?OF>
+				   <EQUAL? <GET ,P-ITBL ,P-VERB> ,ACT?ACCUSE>>
 			      <PUT ,P-LEXV .PTR ,W?WITH>
 			      <SET WRD ,W?WITH>)>
 		       <COND ;(<AND <EQUAL? .WRD ,W?PERIOD>
@@ -316,7 +316,7 @@ with 'P-'. Local variables are not restricted in any way."
 			      <SET LW 0>)
 			     (<EQUAL? .WRD ,W?AND ,W?COMMA> <SET ANDFLG T>)
 			     (<EQUAL? .WRD ,W?ALL ,W?ONE ,W?BOTH>
-			      <COND (<==? .NW ,W?OF>
+			      <COND (<EQUAL? .NW ,W?OF>
 				     <SETG P-LEN <- ,P-LEN 1>>
 				     <SET PTR <+ .PTR ,P-LEXELEN>>)>)
 			     (<OR <EQUAL? .WRD ,W?THEN ,W?PERIOD>
@@ -339,7 +339,7 @@ with 'P-'. Local variables are not restricted in any way."
 				    (<AND <WT? .WRD
 					       ,PS?ADJECTIVE
 					       ,P1?ADJECTIVE>
-					  <NOT <==? .NW 0>>
+					  <NOT <EQUAL? .NW 0>>
 					  <WT? .NW ,PS?OBJECT>>)
 				    (<AND <NOT .ANDFLG>
 					  <NOT <EQUAL? .NW ,W?BUT ,W?EXCEPT>>
@@ -375,7 +375,7 @@ with 'P-'. Local variables are not restricted in any way."
 		 <COND (<L? <SET CNT <- .CNT 1>> 0> <RETURN>)
 		       (T
 			<SET CHR <GETB ,P-INBUF .BPTR>>
-			<COND (<==? .CHR 58>
+			<COND (<EQUAL? .CHR 58>
 			       <SET TIM .SUM>
 			       <SET SUM 0>)
 			      (<G? .SUM 10000> <RFALSE>)
@@ -400,19 +400,19 @@ with 'P-'. Local variables are not restricted in any way."
 	 <SETG P-OFLAG <>>
 	 <COND
 	  (<AND <NOT <ZERO? <SET VERB <GET ,P-ITBL ,P-VERB>>>>
-		<NOT <==? .VERB <GET ,P-OTBL ,P-VERB>>>>
+		<NOT <EQUAL? .VERB <GET ,P-OTBL ,P-VERB>>>>
 	   <RFALSE>)
-	  (<==? ,P-NCN 2>
+	  (<EQUAL? ,P-NCN 2>
 	   <RFALSE>)
-	  (<==? <GET ,P-OTBL ,P-NC1> 1>
-	   <COND (<OR <==? <SET TEMP <GET ,P-ITBL ,P-PREP1>>
+	  (<EQUAL? <GET ,P-OTBL ,P-NC1> 1>
+	   <COND (<OR <EQUAL? <SET TEMP <GET ,P-ITBL ,P-PREP1>>
 			   <GET ,P-OTBL ,P-PREP1>>
 		      <ZERO? .TEMP>>
 		  <PUT ,P-OTBL ,P-NC1 <GET ,P-ITBL ,P-NC1>>
 		  <PUT ,P-OTBL ,P-NC1L <GET ,P-ITBL ,P-NC1L>>)
 		 (T <RFALSE>)>)
-	  (<==? <GET ,P-OTBL ,P-NC2> 1>
-	   <COND (<OR <==? <SET TEMP <GET ,P-ITBL ,P-PREP1>>
+	  (<EQUAL? <GET ,P-OTBL ,P-NC2> 1>
+	   <COND (<OR <EQUAL? <SET TEMP <GET ,P-ITBL ,P-PREP1>>
 			   <GET ,P-OTBL ,P-PREP2>>
 		      <ZERO? .TEMP>>
 		  <PUT ,P-OTBL ,P-NC2 <GET ,P-ITBL ,P-NC1>>
@@ -421,12 +421,12 @@ with 'P-'. Local variables are not restricted in any way."
 		 (T <RFALSE>)>)
 	  (,P-ACLAUSE
 	   <COND
-	    (<NOT <==? ,P-NCN 1>> <SETG P-ACLAUSE <>> <RFALSE>)
+	    (<NOT <EQUAL? ,P-NCN 1>> <SETG P-ACLAUSE <>> <RFALSE>)
 	    (T
 	     <SET BEG <GET ,P-ITBL ,P-NC1>>
 	     <SET END <GET ,P-ITBL ,P-NC1L>>
 	     <REPEAT ()
-		     <COND (<==? .BEG .END>
+		     <COND (<EQUAL? .BEG .END>
 			    <COND (.ADJ
 				   <ACLAUSE-WIN .ADJ>
 				   <RETURN>)
@@ -438,7 +438,7 @@ with 'P-'. Local variables are not restricted in any way."
 				 <NOT .ADJ>>
 			    <SET ADJ .WRD>)
 			   (<OR <BTST <GETB .WRD ,P-PSOFF> ,PS?OBJECT>
-				<==? .WRD ,W?ONE>>
+				<EQUAL? .WRD ,W?ONE>>
 			    <COND (<NOT <EQUAL? .WRD ,P-ANAM ,W?ONE>> <RFALSE>)
 				  (T
 				   <ACLAUSE-WIN .ADJ>
@@ -454,7 +454,7 @@ with 'P-'. Local variables are not restricted in any way."
 <ROUTINE ACLAUSE-WIN (ADJ)
 	 <SETG P-CCSRC ,P-OTBL>
 	 <CLAUSE-COPY ,P-ACLAUSE <+ ,P-ACLAUSE 1> .ADJ>
-	 <AND <NOT <==? <GET ,P-OTBL ,P-NC2> 0>>
+	 <AND <NOT <EQUAL? <GET ,P-OTBL ,P-NC2> 0>>
 	      <SETG P-NCN 2>>
 	 <SETG P-ACLAUSE <>>
 	 <RTRUE>>
@@ -524,14 +524,14 @@ with 'P-'. Local variables are not restricted in any way."
 		<SET NUM <BAND <GETB .SYN ,P-SBITS> ,P-SONUMS>>
 		<COND (<G? ,P-NCN .NUM> T)
 		      (<AND <NOT <L? .NUM 1>>
-			    <0? ,P-NCN>
+			    <ZERO? ,P-NCN>
 			    <OR <ZERO? <SET PREP <GET ,P-ITBL ,P-PREP1>>>
-				<==? .PREP <GETB .SYN ,P-SPREP1>>>>
+				<EQUAL? .PREP <GETB .SYN ,P-SPREP1>>>>
 		       <SET DRIVE1 .SYN>)
-		      (<==? <GETB .SYN ,P-SPREP1> <GET ,P-ITBL ,P-PREP1>>
-		       <COND (<AND <==? .NUM 2> <==? ,P-NCN 1>>
+		      (<EQUAL? <GETB .SYN ,P-SPREP1> <GET ,P-ITBL ,P-PREP1>>
+		       <COND (<AND <EQUAL? .NUM 2> <EQUAL? ,P-NCN 1>>
 			      <SET DRIVE2 .SYN>)
-			     (<==? <GETB .SYN ,P-SPREP2> <GET ,P-ITBL ,P-PREP2>>
+			     (<EQUAL? <GETB .SYN ,P-SPREP2> <GET ,P-ITBL ,P-PREP2>>
 			      <SYNTAX-FOUND .SYN>
 			      <RTRUE>)>)>
 		<COND (<DLESS? LEN 1>
@@ -559,13 +559,13 @@ with 'P-'. Local variables are not restricted in any way."
 	      (<EQUAL? .VERB ,ACT?FIND ;,ACT?WHAT>
 	       <TELL "I can't answer that question." CR>
 	       <RFALSE>)
-	      (<NOT <==? ,WINNER ,PROTAGONIST>>
+	      (<NOT <EQUAL? ,WINNER ,PROTAGONIST>>
 	       <CANT-ORPHAN>)
 	      (T
 	       <ORPHAN .DRIVE1 .DRIVE2>
 	       <TELL "What do you want to ">
 	       <SET TMP <GET ,P-OTBL ,P-VERBN>>
-	       <COND (<==? .TMP 0> <TELL "tell">)
+	       <COND (<EQUAL? .TMP 0> <TELL "tell">)
 		     (<ZERO? <GETB ,P-VTBL 2>>
 		      <PRINTB <GET .TMP 0>>)
 		     (T
@@ -590,7 +590,7 @@ with 'P-'. Local variables are not restricted in any way."
 	<REPEAT ()
 		<COND (<IGRTR? CNT ,P-ITBLLEN> <RETURN>)
 		      (T <PUT ,P-OTBL .CNT <GET ,P-ITBL .CNT>>)>>
-	<COND (<==? ,P-NCN 2> <CLAUSE-COPY ,P-NC2 ,P-NC2L>)>
+	<COND (<EQUAL? ,P-NCN 2> <CLAUSE-COPY ,P-NC2 ,P-NC2L>)>
 	<COND (<NOT <L? ,P-NCN 1>> <CLAUSE-COPY ,P-NC1 ,P-NC1L>)>
 	<COND (.D1
 	       <PUT ,P-OTBL ,P-PREP1 <GETB .D1 ,P-SPREP1>>
@@ -604,19 +604,19 @@ with 'P-'. Local variables are not restricted in any way."
  
 <ROUTINE BUFFER-PRINT (BEG END CP "AUX" (NOSP <>) WRD (FIRST?? T) (PN <>))
 	 <REPEAT ()
-		<COND (<==? .BEG .END> <RETURN>)
+		<COND (<EQUAL? .BEG .END> <RETURN>)
 		      (T
 		       <COND (.NOSP <SET NOSP <>>)
 			     (T <TELL " ">)>
-		       <COND (<==? <SET WRD <GET .BEG 0>> ,W?PERIOD>
+		       <COND (<EQUAL? <SET WRD <GET .BEG 0>> ,W?PERIOD>
 			      <SET NOSP T>)
 			     (T
 			      <COND (<AND .FIRST?? <NOT .PN> .CP>
 				     <TELL "the ">)>
 			      <COND (<OR ,P-OFLAG ,P-MERGED> <PRINTB .WRD>)
-				    (<AND <==? .WRD ,W?IT>
+				    (<AND <EQUAL? .WRD ,W?IT>
 					  <ACCESSIBLE? ,P-IT-OBJECT>
-					  ;<==? ,P-IT-LOC ,HERE>>
+					  ;<EQUAL? ,P-IT-LOC ,HERE>>
 				     <PRINTD ,P-IT-OBJECT>)
 				    (T
 				     <WORD-PRINT <GETB .BEG 2>
@@ -629,7 +629,7 @@ with 'P-'. Local variables are not restricted in any way."
 	 <WORD-PRINT <- <GETB .PTR 2> 1> <+ <GETB .PTR 3> 1>>>
 
 <ROUTINE PREP-PRINT (PREP "AUX" WRD)
-	<COND (<NOT <0? .PREP>>
+	<COND (<NOT <ZERO? .PREP>>
 	       <TELL " ">
 	       <COND (<EQUAL? .PREP ,PR?THROUGH>
 		      <TELL "through">)
@@ -645,7 +645,7 @@ with 'P-'. Local variables are not restricted in any way."
 	     <REST ,P-OCLAUSE
 		   <+ <* <GET ,P-OCLAUSE ,P-MATCHLEN> ,P-LEXELEN> 2>>>
 	<REPEAT ()
-		<COND (<==? .BEG .END>
+		<COND (<EQUAL? .BEG .END>
 		       <PUT ,P-OTBL
 			    .EPTR
 			    <REST ,P-OCLAUSE
@@ -653,7 +653,7 @@ with 'P-'. Local variables are not restricted in any way."
 				     2>>>
 		       <RETURN>)
 		      (T
-		       <COND (<AND .INSRT <==? ,P-ANAM <GET .BEG 0>>>
+		       <COND (<AND .INSRT <EQUAL? ,P-ANAM <GET .BEG 0>>>
 			      <CLAUSE-ADD .INSRT>)>
 		       <CLAUSE-ADD <GET .BEG 0>>)>
 		<SET BEG <REST .BEG ,P-WORDLEN>>>>  
@@ -669,7 +669,7 @@ with 'P-'. Local variables are not restricted in any way."
 	<SET SIZE <* <GET ,PREPOSITIONS 0> 2>>
 	<REPEAT ()
 		<COND (<IGRTR? CNT .SIZE> <RFALSE>)
-		      (<==? <GET ,PREPOSITIONS .CNT> .PREP>
+		      (<EQUAL? <GET ,PREPOSITIONS .CNT> .PREP>
 		       <RETURN <GET ,PREPOSITIONS <- .CNT 1>>>)>>>  
  
 <ROUTINE SYNTAX-FOUND (SYN)
@@ -679,19 +679,19 @@ with 'P-'. Local variables are not restricted in any way."
 <GLOBAL P-GWIMBIT 0>
  
 <ROUTINE GWIM (GBIT LBIT PREP "AUX" OBJ)
-	<COND (<==? .GBIT ,RLANDBIT>
+	<COND (<EQUAL? .GBIT ,RLANDBIT>
 	       <RETURN ,ROOMS>)>
 	<SETG P-GWIMBIT .GBIT>
 	<SETG P-SLOCBITS .LBIT>
 	<PUT ,P-MERGE ,P-MATCHLEN 0>
 	<COND (<GET-OBJECT ,P-MERGE <>>
 	       <SETG P-GWIMBIT 0>
-	       <COND (<==? <GET ,P-MERGE ,P-MATCHLEN> 1>
+	       <COND (<EQUAL? <GET ,P-MERGE ,P-MATCHLEN> 1>
 		      <SET OBJ <GET ,P-MERGE 1>>
 		      <TELL "(">
-		      <COND (<NOT <0? .PREP>>
+		      <COND (<NOT <ZERO? .PREP>>
 			     <PRINTB <SET PREP <PREP-FIND .PREP>>>
-			     <COND (<==? .PREP ,W?OUT>
+			     <COND (<EQUAL? .PREP ,W?OUT>
 				    <TELL " of">)>
 			     <COND (<NOT <FSET? .OBJ ,NARTICLEBIT>>
 				    <TELL " the ">)
@@ -702,16 +702,16 @@ with 'P-'. Local variables are not restricted in any way."
 	      (T <SETG P-GWIMBIT 0> <RFALSE>)>>   
  
 <ROUTINE SNARF-OBJECTS ("AUX" PTR)
-	<COND (<NOT <==? <SET PTR <GET ,P-ITBL ,P-NC1>> 0>>
+	<COND (<NOT <EQUAL? <SET PTR <GET ,P-ITBL ,P-NC1>> 0>>
 	       <SETG P-SLOCBITS <GETB ,P-SYNTAX ,P-SLOC1>>
 	       <OR <SNARFEM .PTR <GET ,P-ITBL ,P-NC1L> ,P-PRSO> <RFALSE>>
-	       <OR <0? <GET ,P-BUTS ,P-MATCHLEN>>
+	       <OR <ZERO? <GET ,P-BUTS ,P-MATCHLEN>>
 		   <SETG P-PRSO <BUT-MERGE ,P-PRSO>>>)>
-	<COND (<NOT <==? <SET PTR <GET ,P-ITBL ,P-NC2>> 0>>
+	<COND (<NOT <EQUAL? <SET PTR <GET ,P-ITBL ,P-NC2>> 0>>
 	       <SETG P-SLOCBITS <GETB ,P-SYNTAX ,P-SLOC2>>
 	       <OR <SNARFEM .PTR <GET ,P-ITBL ,P-NC2L> ,P-PRSI> <RFALSE>>
-	       <COND (<NOT <0? <GET ,P-BUTS ,P-MATCHLEN>>>
-		      <COND (<==? <GET ,P-PRSI ,P-MATCHLEN> 1>
+	       <COND (<NOT <ZERO? <GET ,P-BUTS ,P-MATCHLEN>>>
+		      <COND (<EQUAL? <GET ,P-PRSI ,P-MATCHLEN> 1>
 			     <SETG P-PRSO <BUT-MERGE ,P-PRSO>>)
 			    (T <SETG P-PRSI <BUT-MERGE ,P-PRSI>>)>)>)>
 	<RTRUE>>  
@@ -770,12 +770,12 @@ with 'P-'. Local variables are not restricted in any way."
    <PUT .TBL ,P-MATCHLEN 0>
    <SET WRD <GET .PTR 0>>
    <REPEAT ()
-	   <COND (<==? .PTR .EPTR> <RETURN <GET-OBJECT <OR .BUT .TBL>>>)
+	   <COND (<EQUAL? .PTR .EPTR> <RETURN <GET-OBJECT <OR .BUT .TBL>>>)
 		 (T
 		  <SET NW <GET .PTR ,P-LEXELEN>>
 		  <COND (<EQUAL? .WRD ,W?ALL ,W?BOTH>
 			 <SETG P-GETFLAGS ,P-ALL>
-			 <COND (<==? .NW ,W?OF>
+			 <COND (<EQUAL? .NW ,W?OF>
 				<SET PTR <REST .PTR ,P-WORDLEN>>)>)
 			(<EQUAL? .WRD ,W?BUT ,W?EXCEPT>
 			 <OR <GET-OBJECT <OR .BUT .TBL>> <RFALSE>>
@@ -784,7 +784,7 @@ with 'P-'. Local variables are not restricted in any way."
 			(<EQUAL? .WRD ,W?A ,W?ONE>
 			 <COND (<NOT ,P-ADJ>
 				<SETG P-GETFLAGS ,P-ONE>
-				<COND (<==? .NW ,W?OF>
+				<COND (<EQUAL? .NW ,W?OF>
 				       <SET PTR <REST .PTR ,P-WORDLEN>>)>)
 			       (T
 				<SETG P-NAM ,P-ONEOBJ>
@@ -796,8 +796,8 @@ with 'P-'. Local variables are not restricted in any way."
 			 T)
 			(<WT? .WRD ,PS?BUZZ-WORD>)
 			(<EQUAL? .WRD ,W?AND ,W?COMMA>)
-			(<==? .WRD ,W?OF>
-			 <COND (<0? ,P-GETFLAGS>
+			(<EQUAL? .WRD ,W?OF>
+			 <COND (<ZERO? ,P-GETFLAGS>
 				<SETG P-GETFLAGS ,P-INHIBIT>)>)
 			(<AND <SET WV <WT? .WRD ,PS?ADJECTIVE ,P1?ADJECTIVE>>
 			      <ADJ-CHECK .WRD>>
@@ -806,7 +806,7 @@ with 'P-'. Local variables are not restricted in any way."
 			(<WT? .WRD ,PS?OBJECT ,P1?OBJECT>
 			 <SETG P-NAM .WRD>
 			 <SETG P-ONEOBJ .WRD>)>)>
-	   <COND (<NOT <==? .PTR .EPTR>>
+	   <COND (<NOT <EQUAL? .PTR .EPTR>>
 		  <SET PTR <REST .PTR ,P-WORDLEN>>
 		  <SET WRD .NW>)>>>
 
@@ -850,12 +850,12 @@ with 'P-'. Local variables are not restricted in any way."
 		<SETG P-ADJ <>>)>
 	 <COND (<AND <NOT ,P-NAM>
 		     <NOT ,P-ADJ>
-		     <NOT <==? ,P-GETFLAGS ,P-ALL>>
-		     <0? ,P-GWIMBIT>>
+		     <NOT <EQUAL? ,P-GETFLAGS ,P-ALL>>
+		     <ZERO? ,P-GWIMBIT>>
 		<COND (.VRB
 		       <TELL ,NOUN-MISSING CR>)>
 		<RFALSE>)>
-	 <COND (<OR <NOT <==? ,P-GETFLAGS ,P-ALL>> <0? ,P-SLOCBITS>>
+	 <COND (<OR <NOT <EQUAL? ,P-GETFLAGS ,P-ALL>> <ZERO? ,P-SLOCBITS>>
 		<SETG P-SLOCBITS -1>)>
 	 <SETG P-TABLE .TBL>
 	 <PROG ()
@@ -877,16 +877,16 @@ with 'P-'. Local variables are not restricted in any way."
 	       <SET LEN <- <GET .TBL ,P-MATCHLEN> .TLEN>>
 	       <COND (<BTST ,P-GETFLAGS ,P-ALL> ;<AND * <NOT <EQUAL? .LEN 0>>>)
 		     (<AND <BTST ,P-GETFLAGS ,P-ONE>
-			   <NOT <0? .LEN>>>
-		      <COND (<NOT <==? .LEN 1>>
+			   <NOT <ZERO? .LEN>>>
+		      <COND (<NOT <EQUAL? .LEN 1>>
 			     <PUT .TBL 1 <GET .TBL <RANDOM .LEN>>>
 			     <TELL "(How about the ">
 			     <PRINTD <GET .TBL 1>>
 			     <TELL "?)" CR>)>
 		      <PUT .TBL ,P-MATCHLEN 1>)
 		     (<OR <G? .LEN 1>
-			  <AND <0? .LEN> <NOT <==? ,P-SLOCBITS -1>>>>
-		      <COND (<==? ,P-SLOCBITS -1>
+			  <AND <ZERO? .LEN> <NOT <EQUAL? ,P-SLOCBITS -1>>>>
+		      <COND (<EQUAL? ,P-SLOCBITS -1>
 			     <SETG P-SLOCBITS .XBITS>
 			     <SET OLEN .LEN>
 			     <PUT .TBL
@@ -894,9 +894,9 @@ with 'P-'. Local variables are not restricted in any way."
 				  <- <GET .TBL ,P-MATCHLEN> .LEN>>
 			     <AGAIN>)
 			    (T
-			     <COND (<0? .LEN> <SET LEN .OLEN>)>
+			     <COND (<ZERO? .LEN> <SET LEN .OLEN>)>
 			     <COND (<AND ;.VRB ;".VRB added 8/14/84 by JW"
-					 <NOT <==? ,WINNER ,PROTAGONIST>>>
+					 <NOT <EQUAL? ,WINNER ,PROTAGONIST>>>
 				    <CANT-ORPHAN>
 				    ;<SETG P-NAM <>>
 				    ;<SETG P-ADJ <>>
@@ -904,7 +904,7 @@ with 'P-'. Local variables are not restricted in any way."
 				   (<AND .VRB ,P-NAM>
 				    <WHICH-PRINT .TLEN .LEN .TBL>
 				    <SETG P-ACLAUSE
-					  <COND (<==? .TBL ,P-PRSO> ,P-NC1)
+					  <COND (<EQUAL? .TBL ,P-PRSO> ,P-NC1)
 						(T ,P-NC2)>>
 				    <SETG P-AADJ ,P-ADJ>
 				    <SETG P-ANAM ,P-NAM>
@@ -915,7 +915,7 @@ with 'P-'. Local variables are not restricted in any way."
 			     <SETG P-NAM <>>
 			     <SETG P-ADJ <>>
 			     <RFALSE>)>)>
-	       <COND (<AND <0? .LEN>
+	       <COND (<AND <ZERO? .LEN>
 			   .GCHECK>
 		      <COND (.VRB
 			     ;<SETG P-SLOCBITS .XBITS>
@@ -936,7 +936,7 @@ with 'P-'. Local variables are not restricted in any way."
 		      <SETG P-NAM <>>
 		      <SETG P-ADJ <>>
 		      <RFALSE>)
-		     (<0? .LEN>
+		     (<ZERO? .LEN>
 		      <SET GCHECK T>
 		      <AGAIN>)>
 	       <SETG P-SLOCBITS .XBITS>
@@ -1013,7 +1013,7 @@ with 'P-'. Local variables are not restricted in any way."
 	 <SET RLEN .LEN>
 	 <TELL "Which">
          <COND (<OR ,P-OFLAG ,P-MERGED> <TELL " "> <PRINTB ,P-NAM>)
-	       (<==? .TBL ,P-PRSO>
+	       (<EQUAL? .TBL ,P-PRSO>
 		<CLAUSE-PRINT ,P-NC1 ,P-NC1L <>>)
 	       (T <CLAUSE-PRINT ,P-NC2 ,P-NC2L <>>)>
 	 <TELL " do you mean, ">
@@ -1021,8 +1021,8 @@ with 'P-'. Local variables are not restricted in any way."
 		 <SET TLEN <+ .TLEN 1>>
 		 <SET OBJ <GET .TBL .TLEN>>
 		 <TELL "the " D .OBJ>
-		 <COND (<==? .LEN 2>
-		        <COND (<NOT <==? .RLEN 2>> <TELL ",">)>
+		 <COND (<EQUAL? .LEN 2>
+		        <COND (<NOT <EQUAL? .RLEN 2>> <TELL ",">)>
 		        <TELL " or ">)
 		       (<G? .LEN 2> <TELL ", ">)>
 		 <COND (<L? <SET LEN <- .LEN 1>> 1>
@@ -1042,7 +1042,7 @@ with 'P-'. Local variables are not restricted in any way."
 	       <SET RMGL <- </ <PTSIZE .RMG> 4> 1>>
 	       <SET CNT 0>
 	       <REPEAT ()
-		       <COND (<==? ,P-NAM <GET .RMG <* .CNT 2>>>
+		       <COND (<EQUAL? ,P-NAM <GET .RMG <* .CNT 2>>>
 			      <SETG LAST-PSEUDO-LOC ,HERE>
 			      <PUTP ,PSEUDO-OBJECT
 				    ,P?ACTION
@@ -1054,12 +1054,12 @@ with 'P-'. Local variables are not restricted in any way."
 			      <OBJ-FOUND ,PSEUDO-OBJECT .TBL>
 			      <RETURN>)
 		             (<IGRTR? CNT .RMGL> <RETURN>)>>)>
-	<COND (<==? <GET .TBL ,P-MATCHLEN> .LEN>
+	<COND (<EQUAL? <GET .TBL ,P-MATCHLEN> .LEN>
 	       <SETG P-SLOCBITS -1>
 	       <SETG P-TABLE .TBL>
 	       <DO-SL ,GLOBAL-OBJECTS 1 1>
 	       <SETG P-SLOCBITS .OBITS>
-	       ;<COND (<AND <0? <GET .TBL ,P-MATCHLEN>>
+	       ;<COND (<AND <ZERO? <GET .TBL ,P-MATCHLEN>>
 			   <EQUAL? ,PRSA ,V?LOOK-INSIDE ,V?SEARCH ,V?EXAMINE>>
 		      <DO-SL ,ROOMS 1 1>)>)>>
  
@@ -1082,11 +1082,11 @@ with 'P-'. Local variables are not restricted in any way."
 <ROUTINE SEARCH-LIST (OBJ TBL LVL "AUX" FLS NOBJ)
 	<COND (<SET OBJ <FIRST? .OBJ>>
 	       <REPEAT ()
-		       <COND (<AND <NOT <==? .LVL ,P-SRCBOT>>
+		       <COND (<AND <NOT <EQUAL? .LVL ,P-SRCBOT>>
 				   <GETPT .OBJ ,P?SYNONYM>
 				   <THIS-IT? .OBJ .TBL>>
 			      <OBJ-FOUND .OBJ .TBL>)>
-		       <COND (<AND <OR <NOT <==? .LVL ,P-SRCTOP>>
+		       <COND (<AND <OR <NOT <EQUAL? .LVL ,P-SRCTOP>>
 				       <FSET? .OBJ ,SEARCHBIT>
 				       <FSET? .OBJ ,SURFACEBIT>>
 				   <SET NOBJ <FIRST? .OBJ>>>
@@ -1173,7 +1173,7 @@ with 'P-'. Local variables are not restricted in any way."
 	       <SET LOSS 2>)>
 	<COND (.LOSS
 	       <TELL "I can't use multiple ">
-	       <COND (<==? .LOSS 2> <TELL "in">)>
+	       <COND (<EQUAL? .LOSS 2> <TELL "in">)>
 	       <TELL "direct objects with \"">
 	       <SET TMP <GET ,P-ITBL ,P-VERBN>>
 	       <COND (<ZERO? .TMP> <TELL "tell">)
@@ -1190,12 +1190,12 @@ with 'P-'. Local variables are not restricted in any way."
 	<COND (<NOT <L? .SIZE 0>> <SET CNT 0>)
 	      (ELSE <SET SIZE <GET .TBL 0>>)>
 	<REPEAT ()
-		<COND (<==? .ITM <GET .TBL .CNT>> <RTRUE>)
+		<COND (<EQUAL? .ITM <GET .TBL .CNT>> <RTRUE>)
 		      (<IGRTR? CNT .SIZE> <RFALSE>)>>>    
 
 <ROUTINE ZMEMQB (ITM TBL SIZE "AUX" (CNT 0))
 	<REPEAT ()
-		<COND (<==? .ITM <GETB .TBL .CNT>> <RTRUE>)
+		<COND (<EQUAL? .ITM <GETB .TBL .CNT>> <RTRUE>)
 		      (<IGRTR? CNT .SIZE> <RFALSE>)>>>  
  
 <GLOBAL ALWAYS-LIT <>>
@@ -1213,7 +1213,7 @@ with 'P-'. Local variables are not restricted in any way."
 	       <PUT ,P-MERGE ,P-MATCHLEN 0>
 	       <SETG P-TABLE ,P-MERGE>
 	       <SETG P-SLOCBITS -1>
-	       <COND (<==? .OHERE .RM>
+	       <COND (<EQUAL? .OHERE .RM>
 		      <DO-SL ,WINNER 1 1>
 		      <COND (<AND <NOT <EQUAL? ,WINNER ,PLAYER>>
 				  <IN? ,PLAYER .RM>>
@@ -1226,13 +1226,13 @@ with 'P-'. Local variables are not restricted in any way."
 
 ;<ROUTINE PRSO-PRINT ("AUX" PTR)
 	 <COND (<OR ,P-MERGED
-		    <==? <GET <SET PTR <GET ,P-ITBL ,P-NC1>> 0> ,W?IT>>
+		    <EQUAL? <GET <SET PTR <GET ,P-ITBL ,P-NC1>> 0> ,W?IT>>
 		<TELL " " D ,PRSO>)
 	       (T <BUFFER-PRINT .PTR <GET ,P-ITBL ,P-NC1L> <>>)>>
 
 ;<ROUTINE PRSI-PRINT ("AUX" PTR)
 	 <COND (<OR ,P-MERGED
-		    <==? <GET <SET PTR <GET ,P-ITBL ,P-NC2>> 0> ,W?IT>>
+		    <EQUAL? <GET <SET PTR <GET ,P-ITBL ,P-NC2>> 0> ,W?IT>>
 		<TELL " " D ,PRSO>)
 	       (T <BUFFER-PRINT .PTR <GET ,P-ITBL ,P-NC2L> <>>)>>
 
@@ -1249,6 +1249,6 @@ with 'P-'. Local variables are not restricted in any way."
 	     <OR <NOT <SET SYNS <GETPT .OBJ ,P?ADJECTIVE>>>
 		 <NOT <ZMEMQB ,P-ADJ .SYNS <- <PTSIZE .SYNS> 1>>>>>
 	<RFALSE>)
-       (<AND <NOT <0? ,P-GWIMBIT>> <NOT <FSET? .OBJ ,P-GWIMBIT>>>
+       (<AND <NOT <ZERO? ,P-GWIMBIT>> <NOT <FSET? .OBJ ,P-GWIMBIT>>>
 	<RFALSE>)>
  <RTRUE>>

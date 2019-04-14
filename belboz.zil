@@ -1253,7 +1253,7 @@ with a smile." CR>)>)
 		     ,GNOME-SLEEPING>
 		<TELL "The gnome is asleep, remember?" CR>)
 	       (<AND <FSET? ,GATE ,OPENBIT>
-		     <VERB? SEARCH LOOK-INSIDE PICK>
+		     <VERB? SEARCH LOOK-INSIDE REACH-IN PICK>
 		     <NOT ,COIN-STOLEN>
 		     <NOT ,FWEEPED>>
 		<SETG COIN-STOLEN T>

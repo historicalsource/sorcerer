@@ -1,0 +1,50 @@
+Spell Name	Effect
+----------	------
+  AIMFIZ	transport caster to someone else's location
+  BLORB		safely protect a small object as though in a strong box
+  BLORPLE	explore an object's mystic connections
+  CASKLY	cause perfection
+  CLEESH	change a creature into a small amphibian
+  ESPNIS	sleep
+  EXEX		make things move with greater speed
+  FILFRE	create gratuitous fireworks
+  FROTZ		cause something to give off light
+  FWEEP		turn caster into a bat
+  GASPAR	provide for your own resurrection
+  GIRGOL	stop time
+  GNUSTO	write a magic spell into a spell book
+  GOLMAC	travel temporally
+  GONDAR	quench an open flame
+  GUNCHO	banish the victim to another plane of existence
+  IZYUK		fly like a bird
+  JINDAK	detect magic
+  KREBF		repair willful damage
+  KULCAD	dispel a magic spell
+  LESOCH	gust of wind
+  LISKON	shrink a living thing
+  MALYON	bring life to inanimate objects
+  MEEF		cause plants to wilt		
+  MELBOR	protect magic users from harm by evil beings
+  NITFOL	converse with the beasts in their own tongue
+  OZMOO		survive unnatural death
+  PULVER	cause liquids to become dry
+  REZROV	open even locked or enchanted objects
+  SNAVIG	shape change
+  SWANZO	exorcise an inhabiting presence
+  THROCK	cause plants to grow
+  TINSOT	freeze
+  VARDIK	shield a mind from an evil spirit
+  VAXUM		make a hostile creature your friend
+  VEZZA		view the future
+  YOMIN		mind probe
+  YONK		augment the power of certain spells
+  ZIFMIA	magically summon a being
+
+
+Potion Name	Effect
+-----------	------
+  BERZIO	obviate need for food or drink
+  BLORT		ability to see in dark places
+  FLAXO		exquisite torture
+  FOOBLE	increase muscular coordination
+  VILSTU	obviate need for breathing

@@ -334,12 +334,13 @@ which reads \"Current code: " <GET ,CODE-TABLE ,CODE-NUMBER> "\"." CR>)
 		       <TELL
 "The journal seems to bear a spell protecting it against
 the simple rezrov spell." CR>)
-		      (<NOT ,PRSI>
-		       <COND (<IN? ,KEY ,PROTAGONIST>
-			      <SETG PRSI ,KEY>
-			      <TELL "(with the key)" CR>)
-			     (T
-			      <SETG PRSI ,HANDS>)>
+		      (ELSE
+		       <COND (<NOT ,PRSI>
+			      <COND (<IN? ,KEY ,PROTAGONIST>
+				     <SETG PRSI ,KEY>
+				     <TELL "(with the key)" CR>)
+				    (T
+				     <SETG PRSI ,HANDS>)>)>
 		       <COND (<EQUAL? ,PRSI ,KEY>
 			      <FSET ,JOURNAL ,OPENBIT>
 			      <TELL "The journal springs open." CR>)

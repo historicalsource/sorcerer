@@ -21,7 +21,7 @@
 
 <ROUTINE V-SUPER-BRIEF ()
 	 <SETG SUPER-BRIEF T>
-	 <TELL "Super-brief descriptions." CR>>
+	 <TELL "Superbrief descriptions." CR>>
 
 <ROUTINE V-DIAGNOSE ("AUX" (BOTH <>))
 	 <COND (<L? ,AWAKE 0>
@@ -231,7 +231,7 @@ Release ">
 
 ;"subtitle real verbs"
 
-<ROUTINE V-AGAIN ("AUX" OBJ)
+;<ROUTINE V-AGAIN ("AUX" OBJ)
 	 <COND (<NOT ,L-PRSA>
 		<ANYMORE>)
 	       (<AND <NOT <EQUAL? ,HERE ,LAST-PSEUDO-LOC>>
@@ -1634,7 +1634,7 @@ refreshing your mind. Time passes as you snore blissfully." CR>)>
 	       (T
 		<TELL "There's nothing to swim in!" CR>)>>
 
-<ROUTINE PRE-TAKE ()
+<ROUTINE PRE-TAKE ("AUX" (L <LOC ,PRSO>))
 	 <COND (,FWEEPED
 		<BATTY>)
 	       (<IN? ,PRSO ,PROTAGONIST>
@@ -1643,19 +1643,21 @@ refreshing your mind. Time passes as you snore blissfully." CR>)>
 		      (T
 		       <TELL "You already have it." CR>)>)
 	       (<AND <FSET? ,PRSO ,SPELLBIT>
-		     <FSET? <LOC ,PRSO> ,SCROLLBIT>
-		     <ACCESSIBLE? <LOC ,PRSO>>>
-		<PERFORM ,V?TAKE <LOC ,PRSO>>
+		     .L
+		     <FSET? .L ,SCROLLBIT>
+		     <ACCESSIBLE? .L>>
+		<PERFORM ,V?TAKE .L>
 		<RTRUE>)
-	       (<AND <FSET? <LOC ,PRSO> ,CONTBIT>
-		     <NOT <FSET? <LOC ,PRSO> ,OPENBIT>>>
+	       (<AND .L
+		     <FSET? .L ,CONTBIT>
+		     <NOT <FSET? .L ,OPENBIT>>>
 		<TELL "You can't reach that." CR>
 		<RTRUE>)
 	       (,PRSI
 		<COND (<EQUAL? ,PRSO ,ME>
 		       <PERFORM ,V?DROP ,PRSI>
 		       <RTRUE>)
-		      (<AND <NOT <EQUAL? ,PRSI <LOC ,PRSO>>>
+		      (<AND <NOT <EQUAL? ,PRSI .L>>
 			    <NOT <EQUAL? ,PRSI ,BELBOZ-DESK>>>
 		       <TELL "But">
 		       <ARTICLE ,PRSO T>
@@ -1949,30 +1951,26 @@ incapable of understanding or initiating any." CR>
 
 ;"subtitle magic-related verbs"
 
-<ROUTINE PRE-CAST ("AUX" MEM? SPELL SCROLL)
-	 <SET SPELL
-	      <COND (<VERB? GNUSTO> ,GNUSTO-SPELL)
-		    (<VERB? FROTZ> ,FROTZ-SPELL)
-		    (<VERB? REZROV> ,REZROV-SPELL)
-		    (<VERB? IZYUK> ,IZYUK-SPELL)
-		    (<VERB? AIMFIZ> ,AIMFIZ-SPELL)
-		    (<VERB? FWEEP> ,FWEEP-SPELL)
-		    (<VERB? SWANZO> ,SWANZO-SPELL)
-		    (<VERB? GOLMAC> ,GOLMAC-SPELL)
-		    (<VERB? VARDIK> ,VARDIK-SPELL)
-		    (<VERB? PULVER> ,PULVER-SPELL)
-		    (<VERB? MEEF> ,MEEF-SPELL)
-		    (<VERB? VEZZA> ,VEZZA-SPELL)
-		    (<VERB? GASPAR> ,GASPAR-SPELL)
-		    (<VERB? YOMIN> ,YOMIN-SPELL)
-		    (<VERB? YONK> ,YONK-SPELL)
-		    (<VERB? MALYON> ,MALYON-SPELL)
-		    (T
-		     <TELL "Bug #55" CR>
-		     <RTRUE>)>>
+<ROUTINE PRE-CAST ("AUX" SPELL SCROLL)
 	 <COND (,PERFORMING-SPELL
 	        <SETG PERFORMING-SPELL <>>
 		<RFALSE>)>
+	 <SET SPELL <COND (<VERB? GNUSTO> ,GNUSTO-SPELL)
+			  (<VERB? FROTZ> ,FROTZ-SPELL)
+			  (<VERB? REZROV> ,REZROV-SPELL)
+			  (<VERB? IZYUK> ,IZYUK-SPELL)
+			  (<VERB? AIMFIZ> ,AIMFIZ-SPELL)
+			  (<VERB? FWEEP> ,FWEEP-SPELL)
+			  (<VERB? SWANZO> ,SWANZO-SPELL)
+			  (<VERB? GOLMAC> ,GOLMAC-SPELL)
+			  (<VERB? VARDIK> ,VARDIK-SPELL)
+			  (<VERB? PULVER> ,PULVER-SPELL)
+			  (<VERB? MEEF> ,MEEF-SPELL)
+			  (<VERB? VEZZA> ,VEZZA-SPELL)
+			  (<VERB? GASPAR> ,GASPAR-SPELL)
+			  (<VERB? YOMIN> ,YOMIN-SPELL)
+			  (<VERB? YONK> ,YONK-SPELL)
+			  (<VERB? MALYON> ,MALYON-SPELL)>>
 	 <COND (<OR <EQUAL? .SPELL ,PRSO>
 		    <AND <EQUAL? <LOC .SPELL> ,PRSO>
 			 <NOT <EQUAL? <LOC .SPELL> ,SPELL-BOOK>>>>
@@ -1980,8 +1978,10 @@ incapable of understanding or initiating any." CR>
 "As you must remember from Thaumaturgy 101, you cannot cast a spell upon
 itself, or upon the scroll it is written on." CR>
 		<RTRUE>)
-	       (<FSET? <LOC .SPELL> ,MUNGBIT>
-		<TELL "The spell no longer readable." CR>
+	       (<AND <FSET? <LOC .SPELL> ,MUNGBIT>
+		     <NOT <ALWAYS-MEMORIZED .SPELL>>
+		     <EQUAL? <GETP .SPELL ,P?COUNT> 0>>
+		<TELL "The spell is no longer readable." CR>
 		<RTRUE>)
 	       (<FSET? <LOC .SPELL> ,SCROLLBIT>
 		<SET SCROLL <LOC .SPELL>>
@@ -1991,33 +1991,31 @@ itself, or upon the scroll it is written on." CR>
 			      <RFALSE>)>
 		       <MOVE .SCROLL ,DIAL> ;"in case moby-search wants it"
 		       <TELL
-"As you cast the spell, the " D .SCROLL " vanishes!" CR>
+"As you cast the spell, the " D .SCROLL " vanishes!" CR CR>
 		       <PUTP .SPELL ,P?COUNT 1>)
 		      (<OR <FSET? .SPELL ,TOUCHBIT>
 			   <IN? .SCROLL ,HERE>>
 		       <TELL
-"You don't have the " D .SPELL " memorized, nor do you have the scroll
-on which it is written." CR>
+"You don't have the " D .SPELL " memorized, nor do you have
+the scroll on which it is written." CR>
 		       <RTRUE>)
 		      (T
 		       <TELL
 "The " D .SPELL " is not committed to memory, and you haven't seen any scroll
 on which it is written." CR>
 		       <RTRUE>)>)>
-	 <SET MEM? <GETP .SPELL ,P?COUNT>>
 	 <COND (,FWEEPED
 		<TELL
-"When you attempt to incant the " D .SPELL ", all that comes out is
-a high-pitched squeak!" CR>)
-	       (<EQUAL? .SPELL ,GNUSTO-SPELL ,REZROV-SPELL ,FROTZ-SPELL>
-		<RFALSE> ;"Always memorized")
-	       (<EQUAL? .MEM? 0>
-		<TELL
-"You don't have the " D .SPELL " committed to memory!" CR>
+"When you attempt to incant the " D .SPELL
+", all that comes out is a high-pitched squeak!" CR>)
+	       (<ALWAYS-MEMORIZED .SPELL>
+		<RFALSE>)
+	       (<EQUAL? <GETP .SPELL ,P?COUNT> 0>
 		<THIS-IS-IT .SPELL>
-		<RTRUE>)
+		<TELL
+"You don't have the " D .SPELL " committed to memory!" CR>)
 	       (T
-		<PUTP .SPELL ,P?COUNT <- .MEM? 1>>
+		<PUTP .SPELL ,P?COUNT <- <GETP .SPELL ,P?COUNT> 1>>
 		<SETG SPELL-ROOM <+ ,SPELL-ROOM 1>>
 		<RFALSE>)>>
 
@@ -3013,7 +3011,7 @@ drop dead again." CR>
 	 <SETG P-IT-OBJECT .OBJ>
 	 ;<SETG P-IT-LOC ,HERE>>
 
-<ROUTINE ACCESSIBLE? (OBJ "AUX" (L <LOC .OBJ>)) ;"can player TOUCH object?"
+;<ROUTINE ACCESSIBLE? (OBJ "AUX" (L <LOC .OBJ>)) ;"can player TOUCH object?"
 	 ;"revised 5/2/84 by SEM and SWG"
 	 <COND (<FSET? .OBJ ,INVISIBLE>
 		<RFALSE>)
@@ -3049,7 +3047,7 @@ drop dead again." CR>
 	       (T
 		<RFALSE>)>>
 
-<ROUTINE META-LOC (OBJ)
+;<ROUTINE META-LOC (OBJ)
 	 <REPEAT ()
 		 <COND (<NOT .OBJ>
 			<RFALSE>)
@@ -3264,7 +3262,7 @@ drop dead again." CR>
 <ROUTINE POOR-LISTENERS ()
 	 <TELL "Sleeping gnomes make poor listeners." CR>>
 
-<ROUTINE ANYMORE ()
+;<ROUTINE ANYMORE ()
 	 <TELL "You can't see that anymore." CR>>
 
 <ROUTINE SETTLE-ONTO-BRANCH ()

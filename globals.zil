@@ -106,7 +106,7 @@
 	 <COND (.X
 		<TELL "You'll have to be more specific, I'm afraid." CR>)
 	       (<EQUAL? ,WINNER ,PROTAGONIST>
-		<TELL "You can't see">
+		<TELL "You can't see ">
 		<COND (<OR <EQUAL? ,P-XNAM ,W?BELBOZ ,W?HELIST ,W?KRILL>
 			   <EQUAL? ,P-XNAM ,W?FROBAR ,W?JEEARR ,W?FLATHE>
 			   <EQUAL? ,P-XNAM ,W?DUNCAN ,W?ENTHAR ,W?THOLL>
@@ -116,13 +116,13 @@
 			   <EQUAL? ,P-XNAM ,W?ORKAN ,W?BARBEL ,W?CHEVAU>>
 		       T)
 		      (T
-		       <TELL " any">)> 
+		       <TELL "any ">)> 
 		<NOT-HERE-PRINT .PRSO?>
 		<TELL " here!" CR>)
 	       (T
 		<TELL "Looking confused,">
 		<ARTICLE ,WINNER T>
-		<TELL " says, \"I don't see any">
+		<TELL " says, \"I don't see any ">
 		<NOT-HERE-PRINT .PRSO?>
 		<TELL " here!\"" CR>)>
 	 <SETG P-CONT <>>
@@ -149,7 +149,7 @@
 		      <SETG PRSI ,P-MOBY-FOUND>)>
 	       <RFALSE>)
 	      (<NOT .PRSO?>
-	       <TELL "You wouldn't find any">
+	       <TELL "You wouldn't find any ">
 	       <NOT-HERE-PRINT .PRSO?>
 	       <TELL " there." CR>
 	       <RTRUE>)
@@ -166,27 +166,27 @@
 
 <ROUTINE NOT-HERE-PRINT (PRSO?)
 	 <COND (<EQUAL? ,P-XNAM ,W?BELBOZ>
-		<TELL " Belboz">)
+		<TELL "Belboz">)
 	       (<EQUAL? ,P-XNAM ,W?THOLL>
-		<TELL " Tholl">)
+		<TELL "Tholl">)
 	       (<OR <EQUAL? ,P-XNAM ,W?GURTH ,W?MIZNIA ,W?ACCARD>
 		    <EQUAL? ,P-XNAM ,W?BORPHE ,W?ANTHAR ,W?MITHIC>
 		    <EQUAL? ,P-XNAM ,W?GALEPA ,W?MAREIL ,W?THRIFF>>
-		<TELL " that place">)
+		<TELL "that place">)
 	       (<OR <EQUAL? ,P-XNAM ,W?HELIST ,W?FROBAR ,W?ORKAN>
 		    <EQUAL? ,P-XNAM ,W?BARBEL ,W?CHEVAU>>
-		<TELL " that person">)
+		<TELL "that person">)
 	       (<EQUAL? ,P-XNAM ,W?JEEARR>
-		<TELL " Jeearr">)
+		<TELL "Jeearr">)
 	       (<EQUAL? ,P-XNAM ,W?KRILL>
-		<TELL " Krill">)
+		<TELL "Krill">)
 	       (<EQUAL? ,P-XNAM ,W?FLATHE>
-		<TELL " Flathead">)
+		<TELL "Flathead">)
 	       (<EQUAL? ,P-XNAM ,W?DUNCAN ,W?ENTHAR>
-		<TELL " that King">)
+		<TELL "that King">)
 	       (,P-OFLAG
-	        <COND (,P-XADJ <TELL " "> <PRINTB ,P-XADJN>)>
-	        <COND (,P-XNAM <TELL " "> <PRINTB ,P-XNAM>)>)
+	        <COND (,P-XADJ <PRINTB ,P-XADJN>)>
+	        <COND (,P-XNAM <PRINTB ,P-XNAM>)>)
                (.PRSO?
 	        <BUFFER-PRINT <GET ,P-ITBL ,P-NC1> <GET ,P-ITBL ,P-NC1L> <>>)
                (T
@@ -1084,6 +1084,12 @@ have shifted around." CR>
 " The spell seems very long and extremely complicated.">)>
 		<CRLF>)>>
 
+<ROUTINE ALWAYS-MEMORIZED (SPELL)
+	 <COND (<EQUAL? .SPELL ,GNUSTO-SPELL ,FROTZ-SPELL ,REZROV-SPELL>
+		<RTRUE>)
+	       (T
+		<RFALSE>)>>
+
 <ROUTINE SPELL-F ("AUX" MEM? (FORGET <>))
 	 <COND (<VERB? RESEARCH>
 		<TELL "A spell produced by " <PICK-ONE ,MANUFACTURERS> "." CR>)
@@ -1102,23 +1108,21 @@ a scroll in your hand." CR>)
 		       <TELL <GETP ,PRSO ,P?TEXT>>
 		       <TELL "\"." CR>)>)
 	       (<VERB? LEARN>
-		<COND (<NOT <IN? ,PRSO ,SPELL-BOOK>>
+		<COND (<ALWAYS-MEMORIZED ,PRSO>
+		       <TELL "You already know that spell by heart." CR>)
+		      (<NOT <IN? ,PRSO ,SPELL-BOOK>>
 		       <COND (<IN? <LOC ,PRSO> ,PROTAGONIST>
 			      <TELL
-"You haven't written that spell into your book yet. Until you do, you
-can't memorize the spell." CR>)
+"You can't memorize a spell until you've written it into your spell book." CR>)
 			     (T
-			      <V-LEARN>)>)		      
-		      (<EQUAL? ,PRSO ,GNUSTO-SPELL ,FROTZ-SPELL ,REZROV-SPELL>
-		       <TELL "You already know that spell by heart." CR>)
+			      <V-LEARN>)>)
 		      (<NOT <IN? ,SPELL-BOOK ,PROTAGONIST>>
 		       <TELL
-"You don't have your spell book. How do you expect to memorize a spell
-without a spell book?" CR>)
+"You don't have your spell book. How do you expect to learn
+a spell without a spell book?" CR>)
 		      (<AND <NOT ,LIT>
-			   <NOT ,BLORTED>>
-		       <TELL
-"It will be hard to learn that spell in the dark." CR>)
+			    <NOT ,BLORTED>>
+		       <TELL "You can't learn it in the dark." CR>)
 		      (<FSET? ,SPELL-BOOK ,MUNGBIT>
 		       <PERFORM ,V?READ ,SPELL-BOOK>
 		       <THIS-IS-IT ,PRSO>
@@ -1179,7 +1183,8 @@ likely that something may have been forgotten in the shuffle." CR>)>
 		<PUTP .SP ,P?COUNT <- .NUM 1>>
 		<RTRUE>)>
 	 <PUT ,FORGET-TBL 0 .NUM>
-	 <COND (<0? .NUM> <RTRUE>)>
+	 <COND (<0? .NUM>
+		<RTRUE>)>
 	 <REPEAT ()
 		 <COND (<NOT <EQUAL? <SET NSPL
 					  <PICK-ONE ,FORGET-TBL>>
@@ -1406,3 +1411,40 @@ bellowing and splashing, and twitching their ears.">>
 	 "extremely"
 	 "incredibly"
 	 "dangerously">>
+
+<ROUTINE SPELL-CHECK (TBL WRD "AUX" (OBJ <>))
+	 <COND (<EQUAL? .WRD ,W?GNUSTO>
+		<SET OBJ ,GNUSTO-SPELL>)
+	       (<EQUAL? .WRD ,W?FROTZ>
+		<SET OBJ ,FROTZ-SPELL>)
+	       (<EQUAL? .WRD ,W?REZROV>
+		<SET OBJ ,REZROV-SPELL>)
+	       (<EQUAL? .WRD ,W?IZYUK>
+		<SET OBJ ,IZYUK-SPELL>)
+	       (<EQUAL? .WRD ,W?AIMFIZ>
+		<SET OBJ ,AIMFIZ-SPELL>)
+	       (<EQUAL? .WRD ,W?FWEEP>
+		<SET OBJ ,FWEEP-SPELL>)
+	       (<EQUAL? .WRD ,W?SWANZO>
+		<SET OBJ ,SWANZO-SPELL>)
+	       (<EQUAL? .WRD ,W?GOLMAC>
+		<SET OBJ ,GOLMAC-SPELL>)
+	       (<EQUAL? .WRD ,W?VARDIK>
+		<SET OBJ ,VARDIK-SPELL>)
+	       (<EQUAL? .WRD ,W?PULVER>
+		<SET OBJ ,PULVER-SPELL>)
+	       (<EQUAL? .WRD ,W?MEEF>
+		<SET OBJ ,MEEF-SPELL>)
+	       (<EQUAL? .WRD ,W?VEZZA>
+		<SET OBJ ,VEZZA-SPELL>)
+	       (<EQUAL? .WRD ,W?GASPAR>
+		<SET OBJ ,GASPAR-SPELL>)
+	       (<EQUAL? .WRD ,W?YOMIN>
+		<SET OBJ ,YOMIN-SPELL>)
+	       (<EQUAL? .WRD ,W?YONK>
+		<SET OBJ ,YONK-SPELL>)
+	       (<EQUAL? .WRD ,W?MALYON>
+		<SET OBJ ,MALYON-SPELL>)>
+	 <COND (.OBJ
+		<OBJ-FOUND .OBJ .TBL>)>
+	 <RTRUE>>

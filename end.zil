@@ -641,7 +641,7 @@ as though you're floating in the center of an infinite void.")
 <ROUTINE CHAMBER-OF-LIVING-DEATH-F (RARG)
 	 <COND (<AND <EQUAL? .RARG ,M-BEG>
 		     <NOT <VERB? QUIT SAVE VERSION>>
-		     <NOT <VERB? RESTORE RESTART AGAIN>>
+		     <NOT <VERB? RESTORE RESTART ;AGAIN>>
 		     <NOT <VERB? BRIEF VERBOSE SUPER-BRIEF>>
 		     <NOT <VERB? SCRIPT UNSCRIPT>>>
 		<AGONY>
@@ -669,7 +669,7 @@ the next attack..." CR>)>>
 <ROUTINE HALL-OF-ETERNAL-DEATH-F (RARG)
 	 <COND (<AND <EQUAL? .RARG ,M-BEG>
 		     <NOT <VERB? QUIT SAVE VERSION>>
-		     <NOT <VERB? RESTORE RESTART AGAIN>>
+		     <NOT <VERB? RESTORE RESTART ;AGAIN>>
 		     <NOT <VERB? BRIEF VERBOSE SUPER-BRIEF>>
 		     <NOT <VERB? SCRIPT UNSCRIPT>>>
 		<AGONY>
@@ -868,7 +868,7 @@ offer up their own children upon these altars, as the rivers of the land fill
 with blood. And YOU embody Jeearr; you are cursed by ten thousand generations
 of victims; your face adorns the idols. And worst of all, you remain awake
 and aware, a witness to horror, never sleeping, and never, ever to escape." CR>
-		<SETG SCORE -100>
+		<SETG SCORE -99>
 		<FINISH>)>>
 
 <ROUTINE I-BELBOZ-AWAKES ()

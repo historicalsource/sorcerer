@@ -206,8 +206,11 @@ Everything is hazy, as though viewed through a gauze...">
 	 <MAIN-LOOP>
 	 <AGAIN>>    
 
-<ROUTINE MAIN-LOOP ("AUX" ICNT OCNT NUM CNT OBJ TBL V PTBL OBJ1 TMP)
-   <REPEAT ()
+<ROUTINE MAIN-LOOP ("AUX" TRASH)
+	 <REPEAT ()
+		 <SET TRASH <MAIN-LOOP-1>>>>
+
+<ROUTINE MAIN-LOOP-1 ("AUX" ICNT OCNT NUM CNT OBJ TBL V PTBL OBJ1 TMP)
      <SETG LAST-USED-PRSO <>>
      <SET CNT 0>
      <SET OBJ <>>
@@ -330,7 +333,8 @@ Everything is hazy, as though viewed through a gauze...">
 					      <OR
 					       <AND <NOT <EQUAL? <LOC .OBJ1>
 							         ,WINNER
-							         ,HERE>>
+							         ,HERE
+								 .OBJ>>
 						    <NOT <FSET? <LOC .OBJ1>
 							        ,SURFACEBIT>>
 						    <NOT <EQUAL? <LOC .OBJ1>
@@ -374,7 +378,7 @@ Everything is hazy, as though viewed through a gauze...">
 			 (T
 			  <SET V
 			     <APPLY <GETP <LOC ,WINNER> ,P?ACTION> ,M-END>>)>)>
-	    <COND (<VERB? AGAIN SAVE RESTORE SCORE VERSION>
+	    ;<COND (<VERB? AGAIN SAVE RESTORE SCORE VERSION>
 		   T)
 		  (T
 		   <SETG L-PRSA ,PRSA>
@@ -393,7 +397,7 @@ Everything is hazy, as though viewed through a gauze...">
 			  $RANDOM $COMMAND $RECORD $UNRECORD>
 		   T)
 		  (T
-		   <SET V <CLOCKER>>)>)>>>
+		   <SET V <CLOCKER>>)>)>>
 
 <ROUTINE DESK-KLUDGE ()
 	 <COND (<AND <EQUAL? ,PRSI ,BELBOZ-DESK>
@@ -402,11 +406,9 @@ Everything is hazy, as though viewed through a gauze...">
 	       (T
 		<RTRUE>)>>
 
-<GLOBAL L-PRSA <>>  
- 
-<GLOBAL L-PRSO <>>  
- 
-<GLOBAL L-PRSI <>>  
+;<GLOBAL L-PRSA <>>  
+;<GLOBAL L-PRSO <>>  
+;<GLOBAL L-PRSI <>>  
 
 <GLOBAL P-MULT <>>
 
@@ -573,3 +575,5 @@ Everything is hazy, as though viewed through a gauze...">
 					   <APPLY <GET .C ,C-RTN>>>
 				      <SET FLG T>)>)>)>
 		 <SET C <REST .C ,C-INTLEN>>>>
+
+<ROUTINE NULL-F () <RFALSE>>

@@ -1,0 +1,26 @@
+Assembling SORCERER.ZAP.5 on Thursday, April 2, 1987 15:18:03
+Release(last was 18): 0
+
+    64	Inserting SORCERERDAT.ZAP.5	 (23895 bytes)
+ 23959	Inserting MISC.ZAP.5	  (1629 bytes)
+ 25588	Inserting GPARSER.ZAP.5	  (7076 bytes)
+ 32664	Inserting SYNTAX.ZAP.5	     (0 bytes)
+ 32664	Inserting VERBS.ZAP.6	 (23662 bytes)
+ 56326	Inserting GLOBALS.ZAP.5	  (8411 bytes)
+ 64737	Inserting GUILD.ZAP.5	  (5972 bytes)
+ 70709	Inserting BELBOZ.ZAP.5	  (8556 bytes)
+ 79265	Inserting FORT.ZAP.5	  (1914 bytes)
+ 81179	Inserting PARK.ZAP.5	  (5823 bytes)
+ 87002	Inserting MAZE.ZAP.5	  (3647 bytes)
+ 90649	Inserting COAL.ZAP.5	  (6216 bytes)
+ 96865	Inserting END.ZAP.6	  (6754 bytes)
+103619	Inserting SORCERERSTR.ZAP.5	 (18599 bytes)
+255 objects.
+207 globals.
+1013 word vocabulary.
+
+122218 bytes (120K).
+ 22853 bytes of preload.
+ 11974 bytes of impure.
+
+Outputting symbol tables
