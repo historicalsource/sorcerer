@@ -32,3 +32,6 @@ This collection is meant for education, discussion, and historical work, allowin
 
 Researchers are encouraged to share their discoveries about the information in this source code and the history of Infocom and its many innovative employees.
 
+__Some Trivia and Notes on this Repository__
+
+* This is the fifth title within the mythos of the Great Underground Empire and was internally called ZORK V.
